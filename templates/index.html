@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CipherSphere</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <h1>CipherSphere</h1>
+
+    <h2>Upload File</h2>
+    <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" id="file">
+        <input type="checkbox" name="use_existing_key" id="use_existing_key" value="true"> Use Existing Key<br>
+        <div id="existing_key_input" style="display: none;">
+            {% for key in keys_list %}
+            <input type="radio" name="key_existing" value="{{ key }}"> {{ key }}<br>
+            {% endfor %}
+            <br>
+        </div>
+        <input type="submit" value="Upload File">
+    </form>
+
+    <h2>Keys</h2>
+    <ul>
+        {% for key in keys_list %}
+        <li>{{ key }} <button onclick="fetch('/delete_key/'+'{{key}}').then(location.reload())">delete</button></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Upload Key</h2>
+    <form action="{{ url_for('upload_key') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="key_file" id="key_file">
+        <input type="submit" value="Upload Key">
+    </form>
+
+    <h2>Generate Key</h2>
+    <form action="{{ url_for('generate_key') }}" method="post">
+        <input type="hidden" name="use_existing_key" value="false">
+        <input type="submit" value="Generate Key and Download">
+    </form>
+
+    <h2>Uploaded Files</h2>
+    <ul>
+        {% for file in uploaded_files %}
+        <li>{{ file }}  <button onclick="fetch('/delete_file/'+'{{file}}').then(location.reload())">delete</button> </li>
+        {% endfor %}
+    </ul>
+    <button class="btn btn-primary" data-toggle="modal"
+        data-target="#keyModal">Download any one of these files</button>
+
+    <!-- Modal for selecting key -->
+    <div class="modal fade" id="keyModal" tabindex="-1" role="dialog" aria-labelledby="keyModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="keyModalLabel">Select Key</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('download_file') }}" method="POST">
+                        <h6 class="modal-title" id="keyModalLabel">File</h5>
+
+                        {% for file in uploaded_files %}
+                        <input type="radio" name="file" value="{{ file }}"> {{ file }}<br>
+                        {% endfor %}
+                        <h6 class="modal-title" id="keyModalLabel">Key</h5>
+
+                        {% for key in keys_list %}
+                        <input type="radio" name="key" value="{{ key }}"> {{ key }}<br>
+                        {% endfor %}
+                        <br>
+                        <input type="submit" value="Download File">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#use_existing_key').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#existing_key_input').show();
+                } else {
+                    $('#existing_key_input').hide();
+                    $('#existing_key_input').hide();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+BLOCK_SIZE = 1024*1024
+MAX_FILE_SIZE = 50*1024*1024*1024
+FILE_ENCRYT_ALGOS = ['multifernet','chacha20poly1305','aesccm','aesgcm']
+KEY_ENCRYPT_ALGO = 'fernet'
+OUTPUT_FILE_SUCCESSOR_NAME='enc'
+OUTPUT_FILE_EXTENSION='.crypt'
+KEY_EXTENSION='.pem'
+AAD='some additional data'
+UPLOAD_FOLDER='uploads'
+KEYS_FOLDER='keys'
+ENCRYPTED_FOLDER='encrypted'
+DECRYPTED_FOLDER='decrypted'
