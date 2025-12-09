@@ -26,3 +26,8 @@ keys.py
 # Misc
 *.pptx
 *.pdf
+
+
+*.zip
+*.jpg
+*.pdf
